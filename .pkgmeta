@@ -1,0 +1,11 @@
+package-as: BestSellButton
+
+tools-used:
+	- data-tools
+	- dlcount
+	- findglobals
+
+enable-nolib-creation: no
+
+ignore:
+	- .pkgmeta
