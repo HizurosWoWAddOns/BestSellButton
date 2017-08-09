@@ -1,40 +1,19 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
+
 	<Script file="localization.lua"/>
+
 	<Script file="BestSellButton.lua"/>
 
-	<!--
-	<Button name="BestSellButton" inherits="CharacterFrameTabButtonTemplate">
+	<Button name="BestSellButton" mixin="BestSellButtonMixin" parent="QuestFrame" inherits="CharacterFrameTabButtonTemplate" text="Best sell" hidden="true">
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT"/>
+		</Anchors>
 		<Scripts>
-			<OnLoad>
-				
-			</OnLoad>
+			<OnLoad method="OnLoad"/>
+			<OnEvent method="OnEvent"/>
+			<OnClick method="OnClick"/>
+			<OnShow></OnShow>
 		</Scripts>
 	</Button>
-	-->
-
-	<Frame name="QuestInfoItemSellableTemplate" virtual="true">
-		<Size x="16" y="16"/>
-		<Anchors>
-			<Anchor point="TOPRIGHT" x="6" y="6" />
-		</Anchors>
-		<Layers>
-			<Layer level="MEDIUM">
-				<Texture name="" parentKey="icon"/>
-			</Layer>
-		</Layers>
-	</Frame>
-
-	<Frame name="QuestInfoItemSellable1" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable2" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable3" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable4" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable5" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable6" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable7" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable8" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable9" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-	<Frame name="QuestInfoItemSellable10" inherits="QuestInfoItemSellableTemplate" hidden="true"/>
-
-	<Button name="QuestInfoItem2" inherits="QuestInfoRewardItemTemplate" hidden="true" />
 </Ui>

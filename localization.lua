@@ -1,10 +1,12 @@
 
-local addon, ns = ...
+local addon, ns = ...;
+ns.L = setmetatable({}, { __index = function(t, k) local v=tostring(k) rawset(t, k, v) return v end });
+local L = ns.L;
 
-ns.L = setmetatable({}, { __index = function(t, k) local v=tostring(k) rawset(t, k, v) return v end })
-
-
---if LOCALE_deDE then end
+if LOCALE_deDE then
+	L["AddOn loaded..."] = "AddOn gelanden...";
+	--L["Best sell"]
+end
 
 --if LOCALE_esES or LOCALE_esMX then end
 
