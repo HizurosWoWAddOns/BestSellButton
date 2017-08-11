@@ -4,7 +4,7 @@ ns.L = setmetatable({}, { __index = function(t, k) local v=tostring(k) rawset(t,
 local L = ns.L;
 
 if LOCALE_deDE then
-	--@localization(locale="deDE", format="lua_additive_table", handle-subnamespaces="none")@
+	--@localization(locale="deDE", format="lua_additive_table", handle-subnamespaces="none", handle-unlocalized="ignore")@
 end
 
 --if LOCALE_esES or LOCALE_esMX then end
