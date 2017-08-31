@@ -1,9 +1,10 @@
-## Interface: 70200
+## Interface: 70300
 ## Title: BestSellButton
 ## Notes: An extrabutton under the Questlog to choose the reward item with the highest vendor price.
 ## Author: Hizuro
 ## Version: @project-version@
 ## SavedVariables: BestSellButtonDB
+## OptionalDeps: LibStub, CallbackHandler-1.0, Ace3
 
 #@no-lib-strip@
 libs\LibStub\LibStub.lua
