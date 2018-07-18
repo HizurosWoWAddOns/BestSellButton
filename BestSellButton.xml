@@ -13,7 +13,6 @@
 			<OnLoad method="OnLoad"/>
 			<OnEvent method="OnEvent"/>
 			<OnClick method="OnClick"/>
-			<OnShow></OnShow>
 		</Scripts>
 	</Button>
 </Ui>
