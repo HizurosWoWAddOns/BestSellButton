@@ -1,6 +1,6 @@
-## Interface: 80000
+## Interface: 80100
 ## Title: BestSellButton
-## Notes: An extrabutton under the Questlog to choose the reward item with the highest vendor price.
+## Notes: Adds an extrabutton to the Questlog to choose the reward item with the highest vendor price.
 ## Author: Hizuro
 ## Version: @project-version@
 ## SavedVariables: BestSellButtonDB
