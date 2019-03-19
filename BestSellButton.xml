@@ -2,17 +2,46 @@
 ..\FrameXML\UI.xsd">
 
 	<Script file="localization.lua"/>
-
 	<Script file="BestSellButton.lua"/>
 
-	<Button name="BestSellButton" mixin="BestSellButtonMixin" parent="QuestFrame" inherits="CharacterFrameTabButtonTemplate" text="Best sell" hidden="true">
+	<Frame name="BestSellButton" mixin="BestSellButtonMixin" parent="QuestFrame" hidden="true">
+		<Size y="26" />
 		<Anchors>
-			<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT"/>
+			<Anchor point="LEFT" />
+			<Anchor point="RIGHT" />
+			<Anchor point="BOTTOM" />
 		</Anchors>
+		<Frames>
+			<Button name="$parentUnder" parentKey="sellbutton_under" inherits="CharacterFrameTabButtonTemplate" text="Best sell" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" y="2" x="12"/>
+				</Anchors>
+				<Scripts>
+					<OnClick> self:GetParent():SelectRewardItem(); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentBeside" parentKey="sellbutton_beside" inherits="UIPanelButtonTemplate" text="Best sell" hidden="true">
+				<Size x="52" y="22" />
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="LEFT" y="2" x="124"/>
+				</Anchors>
+				<Scripts>
+					<OnClick> self:GetParent():SelectRewardItem(); </OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentOver" parentKey="sellbutton_over" inherits="UIMenuButtonStretchTemplate" text="Best sell" hidden="true">
+				<Size x="52" y="20" />
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" y="2" x="14"/>
+				</Anchors>
+				<Scripts>
+					<OnClick> self:GetParent():SelectRewardItem(); </OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnEvent method="OnEvent"/>
-			<OnClick method="OnClick"/>
 		</Scripts>
-	</Button>
+	</Frame>
 </Ui>

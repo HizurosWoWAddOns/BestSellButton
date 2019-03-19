@@ -2,6 +2,8 @@
 local addon,ns = ...;
 local L = ns.L;
 local media,hooked = "interface\\addons\\"..addon.."\\media\\",false;
+local imgWidth,imgHeight = 256,64;
+local choices,bestPrice = {},0;
 local priceIconsEdgePos = {
 	TOPLEFT     = {-8,8},
 	TOPRIGHT    = {8,8},
@@ -19,7 +21,6 @@ local priceIconsNone = {
 };
 
 -- [ misc functions ] --
-
 function ns.print(...)
 	local colors,t,c = {"0099ff","00ff00","ff6060","44ffff","ffff00","ff8800","ff44ff","ffffff"},{},1;
 	for i,v in ipairs({...}) do
@@ -45,6 +46,34 @@ local function iconstr(path)
 	return "|T"..path..":16:16|t";
 end
 
+local function CheckChoices()
+	--self.choices,self.bestPrice = {},0;
+	local num = GetNumQuestChoices() or 0;
+	for index=1, num do
+		local QuestRewardItem = _G["QuestInfoRewardsFrameQuestInfoItem"..index];
+		if QuestRewardItem and QuestRewardItem:IsShown() and QuestRewardItem.objectType=="item" then
+			local link = GetQuestItemLink(QuestRewardItem.type,index);
+			local name, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
+			choices[index] = price;
+			if price > bestPrice then
+				bestPrice = price;
+			end
+		end
+	end
+end
+
+local function HideOnHook()
+	if BestSellButton:IsShown() then
+		BestSellButton:Hide();
+	end
+end
+
+local function ShowButton(button)
+	BestSellButton.sellbutton_under:SetShown(button=="under");
+	BestSellButton.sellbutton_beside:SetShown(button=="beside");
+	BestSellButton.sellbutton_over:SetShown(button=="over");
+end
+
 -- [ Ace3 Options table ] --
 
 local dbDefaults = {
@@ -56,6 +85,8 @@ local dbDefaults = {
 		priceIconsEdge = "TOPRIGHT",
 		priceIconsHigh = "interface\\minimap\\tracking\\auctioneer",
 		priceIconsNone = "interface\\common\\icon-noloot",
+
+		sellbutton = "under",
 	}
 };
 
@@ -72,11 +103,11 @@ local options = {
 	args = {
 		options = {
 			type = "group", order = 1,
-			name = L["Options"],
+			name = OPTIONS,
 			args = {
 				showAddOnLoaded = {
 					type = "toggle", order = 1, width = "double",
-					name = L["Show 'AddOn loaded...'"],
+					name = L["AddOn loaded..."],
 					desc = L["Display 'AddOn loaded...' message on startup in chat window"]
 				},
 				priceIcons = {
@@ -112,6 +143,46 @@ local options = {
 							values = {}
 						}
 					}
+				},
+				sellbutton = {
+					type = "group", order = 3, inline = true,
+					name = L["Choose a button position"],
+					get = function(info)
+						return BestSellButton.db.profile[info[#info-1]]==info[#info];
+					end,
+					set = function(info,value)
+						BestSellButton.db.profile.sellbutton=info[#info];
+						if BestSellButton:IsShown() then
+							ShowButton(BestSellButton.db.profile.sellbutton);
+						end
+					end,
+					args = {
+						over = {
+							type = "toggle", order = 1, width = "double",
+							name = L["Over the \"Complete quest\" button"]
+						},
+						beside = {
+							type = "toggle", order = 3, width = "double",
+							name = L["Beside the \"Complete quest\" button"]
+						},
+						under = {
+							type = "toggle", order = 5, width = "double",
+							name = L["Under the quest window"]
+						},
+
+						over_image = {
+							type = "description", order = 2, width = "", name = "",
+							image = media.."button_over", imageWidth = imgWidth, imageHeight = imgHeight
+						},
+						beside_image = {
+							type = "description", order = 4, width = "", name = "",
+							image = media.."button_beside", imageWidth = imgWidth, imageHeight = imgHeight
+						},
+						under_image = {
+							type = "description", order = 6, width = "", name = "",
+							image = media.."button_under", imageWidth = imgWidth, imageHeight = imgHeight
+						},
+					}
 				}
 			}
 		}
@@ -121,17 +192,26 @@ local options = {
 -- [ BestSellButton functions ] --
 BestSellButtonMixin = {};
 
-local function HideOnHook()
-	BestSellButton:HideButton();
-end
-
 function BestSellButtonMixin:OnLoad()
-	_G[addon.."LeftDisabled"]:Hide();
-	_G[addon.."MiddleDisabled"]:Hide();
-	_G[addon.."RightDisabled"]:Hide();
+	self:GetHeight(QuestFrameCompleteButton:GetHeight());
+	local flvl = QuestFrame:GetFrameLevel();
 
-	_G[addon.."Text"]:SetText(L["Best sell"]);
-	PanelTemplates_TabResize(self,12,nil,64);
+	-- under
+	_G[addon.."UnderLeftDisabled"]:Hide();
+	_G[addon.."UnderMiddleDisabled"]:Hide();
+	_G[addon.."UnderRightDisabled"]:Hide();
+	_G[addon.."UnderText"]:SetText(L["Best sell"]);
+	PanelTemplates_TabResize(self.sellbutton_under,12,nil,64);
+
+	-- beside
+	_G[addon.."BesideText"]:SetText(L["Best sell"]);
+	self.sellbutton_beside:SetFrameLevel(flvl+3);
+	self.sellbutton_beside:SetWidth(self.sellbutton_under:GetWidth());
+
+	-- over
+	_G[addon.."OverText"]:SetText(L["Best sell"]);
+	self.sellbutton_over:SetFrameLevel(flvl+3);
+	self.sellbutton_over:SetWidth(self.sellbutton_under:GetWidth());
 
 	if not hooked then
 		QuestFrame:HookScript("OnHide", HideOnHook);
@@ -164,31 +244,20 @@ function BestSellButtonMixin:OnEvent(event,...)
 			ns.print(L["AddOn loaded..."]);
 		end
 	elseif event == "QUEST_FINISHED" then
-		self:HideButton();
+		if self:IsShown() then
+			self:Hide();
+		end
+		self:CleanPriceIcons();
 	elseif (event == "QUEST_COMPLETE" or event=="QUEST_LOG_UPDATE") then
+		CheckChoices();
 		self:ShowButton();
+		self:ShowPriceIcons();
 	end
 end
 
-function BestSellButtonMixin:OnClick()
-	--[[
-	local bestItem,bestPrice = 0,0;
-	local num = GetNumQuestChoices() or 0;
-	ns.debug("<numChoices>",num);
-	for index=1, num do
-		local QuestRewardItem = _G["QuestInfoRewardsFrameQuestInfoItem"..index];
-		if QuestRewardItem and QuestRewardItem:IsShown() and QuestRewardItem.objectType=="item" then
-			local link = GetQuestItemLink(QuestRewardItem.type,index);
-			local name, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
-			ns.debug("<item>",index,name,price);
-			if price > bestPrice then
-				bestItem,bestPrice = index,price;
-			end
-		end
-	end
-	--]]
-	for i=1, #self.choices do
-		if self.choices[i]==self.bestPrice then
+function BestSellButtonMixin:SelectRewardItem()
+	for i=1, #choices do
+		if choices[i]==bestPrice then
 			QuestInfoFrame.itemChoice = i;
 			QuestInfoItemHighlight:ClearAllPoints();
 			QuestInfoItemHighlight:SetPoint("TOPLEFT",_G["QuestInfoRewardsFrameQuestInfoItem"..i],"TOPLEFT",-8,7);
@@ -199,48 +268,28 @@ function BestSellButtonMixin:OnClick()
 end
 
 function BestSellButtonMixin:HideButton()
-	if self:IsShown() then
-		self:CleanPriceIcons();
-		self:Hide();
-	end
 end
 
 function BestSellButtonMixin:ShowButton()
 	if GetNumQuestChoices()>1 and (QuestInfoRewardsFrameQuestInfoItem2 and QuestInfoRewardsFrameQuestInfoItem2:IsVisible()) then
-		self:CheckChoices();
 		if self.bestPrice~=0 then
-			self:ShowPriceIcons();
+			ShowButton(BestSellButton.db.profile.sellbutton);
 			self:Show();
 		end
 	elseif self:IsShown() then
-		self:HideButton();
+		self:Hide();
 	end
 end
 
-function BestSellButtonMixin:CheckChoices()
-	self.choices,self.bestPrice = {},0;
-	local num = GetNumQuestChoices() or 0;
-	for index=1, num do
-		local QuestRewardItem = _G["QuestInfoRewardsFrameQuestInfoItem"..index];
-		if QuestRewardItem and QuestRewardItem:IsShown() and QuestRewardItem.objectType=="item" then
-			local link = GetQuestItemLink(QuestRewardItem.type,index);
-			local name, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
-			self.choices[index] = price;
-			if price > self.bestPrice then
-				self.bestPrice = price;
-			end
-		end
-	end
-end
 
 -- [ price indicator icons ] --
 
 function BestSellButtonMixin:ShowPriceIcons()
 	if self.db.profile.priceIconsEnabled then
-		for i=1, #self.choices do
-			if not self.choices[i] or self.choices[i]==0 then
+		for i=1, #choices do
+			if not choices[i] or choices[i]==0 then
 				self:SetPriceIcon(i,false);
-			elseif self.choices[i]==self.bestPrice then
+			elseif choices[i]==bestPrice then
 				self:SetPriceIcon(i,true);
 			end
 		end
