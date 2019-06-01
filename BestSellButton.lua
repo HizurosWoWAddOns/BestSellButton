@@ -21,24 +21,28 @@ local priceIconsNone = {
 };
 
 -- [ misc functions ] --
-function ns.print(...)
-	local colors,t,c = {"0099ff","00ff00","ff6060","44ffff","ffff00","ff8800","ff44ff","ffffff"},{},1;
-	for i,v in ipairs({...}) do
-		v = tostring(v);
-		if i==1 and v~="" then
-			tinsert(t,"|cff0099ff"..addon.."|r:"); c=2;
+do
+	local addon_short = "BSB";
+	local colors = {"0099ff","00ff00","ff6060","44ffff","ffff00","ff8800","ff44ff","ffffff"};
+	local function colorize(...)
+		local t,c,a1 = {tostringall(...)},1,...;
+		if type(a1)=="boolean" then tremove(t,1); end
+		if a1~=false then
+			tinsert(t,1,"|cff0099ff"..((a1==true and addon_short) or (a1=="||" and "||") or addon).."|r"..(a1~="||" and ":" or ""));
+			c=2;
 		end
-		if not v:match("||c") then
-			v,c = "|cff"..colors[c]..v.."|r", c<#colors and c+1 or 1;
+		for i=c, #t do
+			if not t[i]:find("\124c") then
+				t[i],c = "|cff"..colors[c]..t[i].."|r", c<#colors and c+1 or 1;
+			end
 		end
-		tinsert(t,v);
+		return unpack(t);
 	end
-	print(unpack(t));
-end
-
-if GetAddOnMetadata(addon,"Version")=="@".."project-version".."@" then
+	function ns.print(...)
+		print(colorize(...));
+	end
 	function ns.debug(...)
-		ns.print("debug",...);
+		ConsolePrint(date("|cff999999%X|r"),colorize(...));
 	end
 end
 
