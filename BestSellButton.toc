@@ -1,4 +1,4 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: BestSellButton
 ## Notes: Adds an extrabutton to the Questlog to choose the reward item with the highest vendor price.
 ## Author: Hizuro
