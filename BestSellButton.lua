@@ -69,9 +69,14 @@ local function CheckChoices()
 	end
 end
 
-local function HideOnHook()
+local function HideOnHook(parent)
 	if BestSellButton:IsShown() then
-		BestSellButton:Hide();
+		C_Timer.After(0.6,function()
+			ns.debugPrint("<HideOnHook>",not parent:IsShown());
+			if not parent:IsShown() then
+				BestSellButton:Hide();
+			end
+		end);
 	end
 end
 
@@ -228,9 +233,10 @@ function BestSellButtonMixin:OnLoad()
 		hooked = true;
 	end
 
-	self:RegisterEvent("ADDON_LOADED");
-	self:RegisterEvent("QUEST_COMPLETE");
-	self:RegisterEvent("QUEST_FINISHED");
+	self:RegisterEvent("VARIABLES_LOADED");
+	self:RegisterEvent("QUEST_DETAIL"); -- display quest details
+	self:RegisterEvent("QUEST_COMPLETE"); -- quest complete screen with quest complete button and reward items
+	self:RegisterEvent("QUEST_FINISHED"); -- on close gossip frame or force it?
 
 	BestSellButtonMixin=nil;
 end
@@ -248,15 +254,13 @@ function BestSellButtonMixin:OnEvent(event,...)
 		if self.db.profile.showAddOnLoaded then
 			ns.print(L["AddOn loaded..."]);
 		end
-	elseif event == "QUEST_FINISHED" then
-		if self:IsShown() then
-			self:Hide();
-		end
-		self:CleanPriceIcons();
-	elseif (event == "QUEST_COMPLETE" or event=="QUEST_LOG_UPDATE") then
+	elseif event=="QUEST_COMPLETE" then
 		CheckChoices();
 		self:ShowButton();
 		self:ShowPriceIcons();
+	elseif (event=="QUEST_FINISHED" or event=="QUEST_DETAIL") and self:IsShown() then
+		self:Hide();
+		self:CleanPriceIcons();
 	end
 end
 
@@ -326,9 +330,11 @@ end
 
 function BestSellButtonMixin:CleanPriceIcons()
 	for i,v in pairs(self.icons)do
-		v:ClearAllPoints();
-		v:Hide();
-		tinsert(self.iconsUnused,v);
+		if v then
+			v:ClearAllPoints();
+			v:Hide();
+			tinsert(self.iconsUnused,v);
+		end
 	end
 	wipe(self.icons);
 end
