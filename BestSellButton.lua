@@ -72,7 +72,6 @@ end
 local function HideOnHook(parent)
 	if BestSellButton:IsShown() then
 		C_Timer.After(0.6,function()
-			ns.debugPrint("<HideOnHook>",not parent:IsShown());
 			if not parent:IsShown() then
 				BestSellButton:Hide();
 			end
