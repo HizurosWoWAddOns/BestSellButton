@@ -23,12 +23,12 @@ local priceIconsNone = {
 -- [ misc functions ] --
 do
 	local addon_short = "BSB";
-	local colors = {"0099ff","00ff00","ff6060","44ffff","ffff00","ff8800","ff44ff","ffffff"};
+	local colors = {"82c5ff","00ff00","ff6060","44ffff","ffff00","ff8800","ff44ff","ffffff"};
 	local function colorize(...)
 		local t,c,a1 = {tostringall(...)},1,...;
 		if type(a1)=="boolean" then tremove(t,1); end
 		if a1~=false then
-			tinsert(t,1,"|cff0099ff"..((a1==true and addon_short) or (a1=="||" and "||") or addon).."|r"..(a1~="||" and HEADER_COLON or ""));
+			tinsert(t,1,"|cff82c5ff"..((a1==true and addon_short) or (a1=="||" and "||") or addon).."|r"..(a1~="||" and HEADER_COLON or ""));
 			c=2;
 		end
 		for i=c, #t do
