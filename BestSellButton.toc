@@ -1,7 +1,6 @@
-## Interface: 90005
-## Interface-Retail: 90005
-## Interface-Classic: 11307
-## Interface-BC: 20501
+## Interface: 90200
+## Interface-BCC: 20503
+## Interface-Classic: 11402
 ## Title: BestSellButton
 ## Notes: Adds an extrabutton to the Questlog to choose the reward item with the highest vendor price.
 ## Author: Hizuro
