@@ -14,7 +14,7 @@ This addon put an extra button to the questframe (not the questlog) and the butt
 [![Screenshot](./.github/media/BestSellButton_t.jpg)](./.github/media/BestSellButton.jpg)
 
 ## Optional extra
-Indicator icons for unsableable and highest vendor price on reward items.
+Indicator icons for unsaleable and highest vendor price on reward items.
 
 ## My other projects
 * [On Curseforge](https://www.curseforge.com/members/hizuro_de/projects)
