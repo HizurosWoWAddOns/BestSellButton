@@ -4,8 +4,9 @@
 ![Downloads](https://img.shields.io/github/downloads/hizuro/BestSellButton/total?style=flat-square)
 ![Downloads](https://img.shields.io/github/downloads/hizuro/BestSellButton/latest/total?style=flat-square)
 &nbsp; &nbsp; &nbsp; &nbsp;
-[![Patreon](https://img.shields.io/badge/&zwj;-Patreon-gray?logo=patreon&color=red&style=flat-square)](https://www.patreon.com/bePatron?u=12558524)
+<!-- [![Patreon](https://img.shields.io/badge/&zwj;-Patreon-gray?logo=patreon&color=red&style=flat-square)](https://www.patreon.com/bePatron?u=12558524) -->
 [![Paypal](https://img.shields.io/badge/&zwj;-Paypal-gray?logo=paypal&color=blue&style=flat-square)](https://paypal.me/hizuro)
+[![Patreon](https://img.shields.io/liberapay/patrons/hizuro?logo=patreon&style=flat-square)](https://www.patreon.com/bePatron?u=12558524)
 ![Sponsors](https://img.shields.io/github/sponsors/hizuro?logo=github&style=flat-square)
 
 ## Description
