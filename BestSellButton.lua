@@ -118,8 +118,7 @@ local options = {
 			args = {
 				showAddOnLoaded = {
 					type = "toggle", order = 1, width = "double",
-					name = L["AddOn loaded..."],
-					desc = L["Display 'AddOn loaded...' message on startup in chat window"]
+					name = L["AddOnLoaded"], desc = L["AddOnLoadedDesc"].."|n|n|cff44ff44"..L["AddOnLoadedDescAlt"].."|r"
 				},
 				priceIcons = {
 					type = "group", order = 2, inline = true,
@@ -250,8 +249,8 @@ function BestSellButtonMixin:OnEvent(event,...)
 		LibStub("AceConfig-3.0"):RegisterOptionsTable(addon, options);
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addon);
 
-		if self.db.profile.showAddOnLoaded then
-			ns.print(L["AddOn loaded..."]);
+		if self.db.profile.showAddOnLoaded or IsShiftKeyDown() then
+			ns.print(L["AddOnLoaded"]);
 		end
 	elseif event=="QUEST_COMPLETE" then
 		CheckChoices();
