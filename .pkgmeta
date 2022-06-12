@@ -25,6 +25,9 @@ externals:
         url: https://repos.wowace.com/wow/ace3/trunk/AceDBOptions-3.0
         tag: latest
 
+    libs/HizurosSharedTools:
+        url: https://github.com/HizurosWoWAddOns/.github
+
 enable-nolib-creation: no
 enable-toc-creation: yes
 
@@ -32,5 +35,6 @@ ignore:
     - libs/LibStub/tests
     - libs/LibStub/LibStub.toc
     - libs/CallbackHandler-1.0/CallbackHandler-1.0.xml
+    - libs/HizurosSharedTools/profile
+    - libs/HizurosSharedTools/README.md
 
-license-output: LICENSE.txt
