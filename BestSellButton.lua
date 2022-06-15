@@ -1,6 +1,9 @@
 
 local addon,ns = ...;
 local L = ns.L;
+ns.debugMode = "@project-version@"=="@".."project-version".."@";
+LibStub("HizurosSharedTools").RegisterPrint(ns,addon,"BSB");
+
 local media,hooked = "interface\\addons\\"..addon.."\\media\\",false;
 local imgWidth,imgHeight = 256,64;
 local choices,bestPrice = {},0;
@@ -171,7 +174,7 @@ local options = {
 
 		credits = {
 			type = "group", order = 200,
-			name = L["Credits"],
+			name = L["Credit"],
 			args = {}
 		},
 	}
@@ -227,10 +230,10 @@ function BestSellButtonMixin:OnEvent(event,...)
 		LibStub("AceConfig-3.0"):RegisterOptionsTable(addon, options);
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addon);
 
-		ns.AddCredits(options.args.credits.args);
+		LibStub("HizurosSharedTools").AddCredit(addon,options.args.credits.args);
 
 		if self.db.profile.showAddOnLoaded or IsShiftKeyDown() then
-			ns.print(L["AddOnLoaded"]);
+			ns:print(L["AddOnLoaded"]);
 		end
 	elseif event=="QUEST_COMPLETE" then
 		CheckChoices();
