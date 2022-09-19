@@ -1,5 +1,5 @@
-## Interface: 90205
-## Interface-BCC: 20504
+## Interface: 90207
+## Interface-Wrath: 30400
 ## Interface-Classic: 11403
 ## Title: BestSellButton
 ## Notes: Adds an extrabutton to the Questlog to choose the reward item with the highest vendor price.
