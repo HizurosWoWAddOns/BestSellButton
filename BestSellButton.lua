@@ -229,7 +229,7 @@ function BestSellButtonMixin:OnLoad()
 		hooked = true;
 	end
 
-	self:RegisterEvent("VARIABLES_LOADED");
+	self:RegisterEvent("ADDON_LOADED");
 	self:RegisterEvent("QUEST_DETAIL"); -- display quest details
 	self:RegisterEvent("QUEST_COMPLETE"); -- quest complete screen with quest complete button and reward items
 	self:RegisterEvent("QUEST_FINISHED"); -- on close gossip frame or force it?
@@ -238,7 +238,7 @@ function BestSellButtonMixin:OnLoad()
 end
 
 function BestSellButtonMixin:OnEvent(event,...)
-	if event == "VARIABLES_LOADED" then
+	if event == "ADDON_LOADED" and addon==... then
 		self:InitPriceIcons();
 
 		self.db = LibStub("AceDB-3.0"):New("BestSellButtonDB",dbDefaults,true);
@@ -252,6 +252,7 @@ function BestSellButtonMixin:OnEvent(event,...)
 		if self.db.profile.showAddOnLoaded or IsShiftKeyDown() then
 			ns:print(L["AddOnLoaded"]);
 		end
+		self:UnregisterEvent(event);
 	elseif event=="QUEST_COMPLETE" then
 		if not self:CheckChoices() then
 			C_Timer.After(1,function()
