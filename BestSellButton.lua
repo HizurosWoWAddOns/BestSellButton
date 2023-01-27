@@ -28,22 +28,6 @@ local function iconstr(path)
 	return "|T"..path..":16:16|t";
 end
 
-local function CheckChoices()
-	--self.choices,self.bestPrice = {},0;
-	local num = GetNumQuestChoices() or 0;
-	for index=1, num do
-		local QuestRewardItem = _G["QuestInfoRewardsFrameQuestInfoItem"..index];
-		if QuestRewardItem and QuestRewardItem:IsShown() and QuestRewardItem.objectType=="item" then
-			local link = GetQuestItemLink(QuestRewardItem.type,index);
-			local name, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
-			choices[index] = price;
-			if price > bestPrice then
-				bestPrice = price;
-			end
-		end
-	end
-end
-
 local function HideOnHook(parent)
 	if BestSellButton:IsShown() then
 		C_Timer.After(0.6,function()
@@ -183,6 +167,39 @@ local options = {
 -- [ BestSellButton functions ] --
 BestSellButtonMixin = {};
 
+function BestSellButtonMixin:CheckChoices()
+	-- it could be GetQuestItemLink returns nil while QuestRewardItem:IsShown() is true.
+	-- maybe network timing problem to get correct item link directly after event QUEST_COMPLETE
+	-- try again after a second...
+	local checkError = false;
+	local num,link,price,_ = GetNumQuestChoices() or 0;
+	for index=1, num do
+		local QuestRewardItem = _G["QuestInfoRewardsFrameQuestInfoItem"..index];
+		if QuestRewardItem and QuestRewardItem:IsShown() and QuestRewardItem.objectType=="item" then
+			link = GetQuestItemLink(QuestRewardItem.type,index);
+			if link then
+				_, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
+			end
+			if price then
+				choices[index] = price;
+				if price > bestPrice then
+					bestPrice = price;
+				end
+			else
+				checkError = true;
+			end
+		end
+	end
+
+	if checkError then
+		return false;
+	end
+
+	self:ShowButton();
+	self:ShowPriceIcons();
+	return true;
+end
+
 function BestSellButtonMixin:OnLoad()
 	self:GetHeight(QuestFrameCompleteButton:GetHeight());
 	local flvl = QuestFrame:GetFrameLevel();
@@ -236,9 +253,12 @@ function BestSellButtonMixin:OnEvent(event,...)
 			ns:print(L["AddOnLoaded"]);
 		end
 	elseif event=="QUEST_COMPLETE" then
-		CheckChoices();
-		self:ShowButton();
-		self:ShowPriceIcons();
+		if not self:CheckChoices() then
+			C_Timer.After(1,function()
+				self:CheckChoices(); -- try again
+				-- see comment in function BestSellButtonMixin.CheckChoices
+			end);
+		end
 	elseif (event=="QUEST_FINISHED" or event=="QUEST_DETAIL") and self:IsShown() then
 		self:Hide();
 		self:CleanPriceIcons();
