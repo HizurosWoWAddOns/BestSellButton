@@ -205,10 +205,25 @@ function BestSellButtonMixin:OnLoad()
 	local flvl = QuestFrame:GetFrameLevel();
 
 	-- under
-	_G[addon.."UnderLeftDisabled"]:Hide();
-	_G[addon.."UnderMiddleDisabled"]:Hide();
-	_G[addon.."UnderRightDisabled"]:Hide();
-	_G[addon.."UnderText"]:SetText(L["Best sell"]);
+	local template = "CharacterFrameTabTemplate" -- retail clients
+	if WOW_PROJECT_ID~=WOW_PROJECT_MAINLINE then
+		template = "CharacterFrameTabButtonTemplate" -- classic clients
+	end
+	self.sellbutton_under = CreateFrame("Button",addon.."Under",self,template);
+	self.sellbutton_under:SetPoint("TOP",QuestFrameCompleteButton,"BOTTOM",-3,0);
+	self.sellbutton_under:SetScript("OnClick",function(self) self:GetParent():SelectRewardItem(); end);
+	self.sellbutton_under:Hide();
+	if self.sellbutton_under.Text then
+		self.sellbutton_under.Text:SetText(L["Best sell"]);
+		self.sellbutton_under.LeftActive:Hide();
+		self.sellbutton_under.MiddleActive:Hide();
+		self.sellbutton_under.RightActive:Hide();
+	else
+		_G[addon.."UnderText"]:SetText(L["Best sell"]);
+		_G[addon.."UnderLeftDisabled"]:Hide();
+		_G[addon.."UnderMiddleDisabled"]:Hide();
+		_G[addon.."UnderRightDisabled"]:Hide();
+	end
 	PanelTemplates_TabResize(self.sellbutton_under,12,nil,64);
 
 	-- beside

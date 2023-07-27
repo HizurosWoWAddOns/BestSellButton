@@ -13,14 +13,7 @@
 			<Anchor point="BOTTOM" />
 		</Anchors>
 		<Frames>
-			<Button name="$parentUnder" parentKey="sellbutton_under" inherits="CharacterFrameTabButtonTemplate" text="Best sell" hidden="true">
-				<Anchors>
-					<Anchor point="TOP" relativeTo="QuestFrameCompleteButton" relativePoint="BOTTOM" y="-3" x="0"/>
-				</Anchors>
-				<Scripts>
-					<OnClick> self:GetParent():SelectRewardItem(); </OnClick>
-				</Scripts>
-			</Button>
+			<!-- sellbutton_under converted to lua; Since Dragonflight is CharacterFrameTabButtonTemplate no longer present. Blizzard has added new template called CharacterFrameTabTemplate. -->
 			<Button name="$parentBeside" parentKey="sellbutton_beside" inherits="UIPanelButtonTemplate" text="Best sell" hidden="true">
 				<Size x="34" y="22" />
 				<Anchors>
