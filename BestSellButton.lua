@@ -171,16 +171,15 @@ function BestSellButtonMixin:CheckChoices()
 	-- it could be GetQuestItemLink returns nil while QuestRewardItem:IsShown() is true.
 	-- maybe network timing problem to get correct item link directly after event QUEST_COMPLETE
 	-- try again after a second...
-	local checkError = false;
-	local num,link,price,_ = GetNumQuestChoices() or 0;
+	local checkError,num,price = false,GetNumQuestChoices() or 0;
 	-- resets
 	bestPrice = 0;
 	wipe(choices);
 	-- now check the offered items
 	for index=1, num do
 		local QuestRewardItem = _G["QuestInfoRewardsFrameQuestInfoItem"..index];
-		if QuestRewardItem and QuestRewardItem:IsShown() and QuestRewardItem.objectType=="item" then
-			link = GetQuestItemLink(QuestRewardItem.type,index);
+		if QuestRewardItem and QuestRewardItem:IsVisible() and QuestRewardItem.objectType=="item" and QuestRewardItem.type=="choice" then
+			local link,_ = GetQuestItemLink(QuestRewardItem.type,index);
 			if link then
 				_, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
 			end
