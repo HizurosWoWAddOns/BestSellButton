@@ -173,6 +173,10 @@ function BestSellButtonMixin:CheckChoices()
 	-- try again after a second...
 	local checkError = false;
 	local num,link,price,_ = GetNumQuestChoices() or 0;
+	-- resets
+	bestPrice = 0;
+	wipe(choices);
+	-- now check the offered items
 	for index=1, num do
 		local QuestRewardItem = _G["QuestInfoRewardsFrameQuestInfoItem"..index];
 		if QuestRewardItem and QuestRewardItem:IsShown() and QuestRewardItem.objectType=="item" then
