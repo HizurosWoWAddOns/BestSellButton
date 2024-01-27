@@ -185,6 +185,9 @@ function BestSellButtonMixin:CheckChoices()
 				_, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
 			end
 			if price then
+				if QuestRewardItem.count>1 then
+					price = price * QuestRewardItem.count;
+				end
 				choices[index] = price;
 				if price > bestPrice then
 					bestPrice = price;
