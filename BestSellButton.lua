@@ -181,7 +181,7 @@ function BestSellButtonMixin:CheckChoices()
 		if QuestRewardItem and QuestRewardItem:IsVisible() and QuestRewardItem.objectType=="item" and QuestRewardItem.type=="choice" then
 			local link,_ = GetQuestItemLink(QuestRewardItem.type,index);
 			if link then
-				_, _, _, _, _, _, _, _, _, _, price = GetItemInfo(link);
+				_, _, _, _, _, _, _, _, _, _, price = C_Item.GetItemInfo(link);
 			end
 			if price then
 				if QuestRewardItem.count>1 then
