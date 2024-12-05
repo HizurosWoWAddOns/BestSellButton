@@ -1,6 +1,6 @@
-## Interface: 110002
-## Interface-Cata: 40400
-## Interface-Classic: 11503
+## Interface: 110005
+## Interface-Cata: 40401
+## Interface-Classic: 11505
 ## Title: BestSellButton
 ## Notes: Adds an extrabutton to the Questlog to choose the reward item with the highest vendor price.
 ## IconTexture: 413572
