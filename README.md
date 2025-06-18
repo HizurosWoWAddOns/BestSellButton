@@ -1,5 +1,5 @@
 # BestSellButton (WoW AddOn)
-![Build](https://github.com/HizurosWoWAddOns/BestSellButton/actions/workflows/bigwigsmods-packager.yml/badge.svg)
+![Build](https://img.shields.io/github/actions/workflow/status/HizurosWoWAddOns/BestSellButton/packager.yml?style=flat-square)
 ![Tag](https://img.shields.io/github/v/tag/HizurosWoWAddOns/BestSellButton?style=flat-square)
 ![Downloads](https://img.shields.io/github/downloads/HizurosWoWAddOns/BestSellButton/total?style=flat-square)
 ![Downloads](https://img.shields.io/github/downloads/HizurosWoWAddOns/BestSellButton/latest/total?style=flat-square)
