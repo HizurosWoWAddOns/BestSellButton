@@ -1,4 +1,4 @@
-## Interface: 120007, 50504, 38001, 20505, 11508
+## Interface: 120100, 50504, 38002, 20506, 11509
 ## Title: BestSellButton
 ## Notes: Adds an extrabutton to the Questlog to choose the reward item with the highest vendor price.
 ## IconTexture: Interface\AddOns\BestSellButton\media\ACHIEVEMENT_GUILDPERK_CASHFLOW.tga
