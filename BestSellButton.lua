@@ -22,6 +22,10 @@ local priceIconsNone = {
 	"interface\\common\\voicechat-muted",
 	"interface\\buttons\\ui-grouploot-pass-up"
 };
+local supporter = {
+	-- {<color>,<name>}, <localizations>, <donations>, <otherSupportTypes>, <special text>,
+	{"curseforge","ZamestoTV"},		{"ruRU"},false,false,false,
+}
 
 -- [ misc functions ] --
 local function iconstr(path)
@@ -155,12 +159,6 @@ local options = {
 				}
 			}
 		},
-
-		credits = {
-			type = "group", order = 200,
-			name = L["Credit"],
-			args = {}
-		},
 	}
 };
 
@@ -268,7 +266,7 @@ function BestSellButtonMixin:OnEvent(event,...)
 		LibStub("AceConfig-3.0"):RegisterOptionsTable(addon, options);
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addon);
 
-		LibStub("HizurosSharedTools").AddCredit(addon,options.args.credits.args);
+		LibStub("HizurosSharedTools").AddCredit(addon,options.args,{supporter=supporter});
 
 		if self.db.profile.showAddOnLoaded or IsShiftKeyDown() then
 			ns:print(L["AddOnLoaded"]);
