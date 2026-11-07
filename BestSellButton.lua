@@ -210,7 +210,9 @@ function BestSellButtonMixin:OnLoad()
 
 	-- under
 	local template = "CharacterFrameTabTemplate" -- retail clients
-	if WOW_PROJECT_ID~=WOW_PROJECT_MAINLINE then
+	if WOW_PROJECT_ID==WOW_PROJECT_CAMELOT then
+		template = "FriendsFrameTabTemplate" -- forever client
+	elseif WOW_PROJECT_ID~=WOW_PROJECT_MAINLINE then
 		template = "CharacterFrameTabButtonTemplate" -- classic clients
 	end
 	self.sellbutton_under = CreateFrame("Button",addon.."Under",self,template);
